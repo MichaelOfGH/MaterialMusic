@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System.Windows;
 
 namespace MaterialMusic.ViewModel
 {
@@ -32,11 +33,11 @@ namespace MaterialMusic.ViewModel
             }
 
             MainWindow window = null;
-            for (int i = 0; i < App.Current.Windows.Count; i++)
+            for (int i = 0; i < Application.Current.Windows.Count; i++)
             {
-                if (App.Current.Windows[i] is MainWindow)
+                if (Application.Current.Windows[i] is MainWindow)
                 {
-                    window = App.Current.Windows[i] as MainWindow;
+                    window = Application.Current.Windows[i] as MainWindow;
                 }
             }
 

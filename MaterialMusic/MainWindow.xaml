@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:MaterialMusic"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="448" Width="672"
+        Title="MainWindow" MinHeight="448" MinWidth="672" 
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        TextElement.FontWeight="Medium"
-        TextElement.FontSize="14"
+        TextElement.FontWeight="Medium" 
+        TextElement.FontSize="14" 
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         WindowStyle="None" AllowsTransparency="True" Padding="0"
         DataContext="{Binding Source={StaticResource Locator},Path=Main}"
@@ -44,7 +44,7 @@
                                                     Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True" >
                                             <Button Style="{StaticResource MaterialDesignFlatButton}" 
                                                 Content="{materialDesign:PackIcon Kind=Minus}"
-                                                Padding="0" Height="32" Width="32"
+                                                Padding="0" Height="32" Width="32" Foreground="{DynamicResource }"
                                                 />
                                             
                                             <Button Style="{StaticResource MaterialDesignFlatButton}" 
