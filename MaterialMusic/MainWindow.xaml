@@ -33,7 +33,7 @@
         <materialDesign:ColorZone
             Grid.RowSpan="2"
             Padding="8"
-            materialDesign:ShadowAssist.ShadowDepth="Depth3"
+            materialDesign:ShadowAssist.ShadowDepth="Depth2"
             Mode="PrimaryDark">
             <StackPanel Orientation="Horizontal">
                 <ToggleButton x:Name="HambugerMenuButton" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
@@ -48,6 +48,7 @@
             VerticalAlignment="Stretch"
             BorderBrush="{DynamicResource MaterialDesignDivider}"
             IsLeftDrawerOpen="{Binding ElementName=HambugerMenuButton, Path=IsChecked}">
+            <!--  Draw menu on the left  -->
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <StackPanel>
                     <TextBlock Margin="4" HorizontalAlignment="Center">
@@ -70,6 +71,14 @@
                     </Button>
                 </StackPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
+            <!--  Content  -->
+            <Grid>
+                <Button
+                    Width="112"
+                    Height="56"
+                    Command="{Binding RequestCommand}"
+                    Content="RequestWeb" />
+            </Grid>
         </materialDesign:DrawerHost>
     </Grid>
 </Window>

@@ -1,6 +1,9 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using RestSharp;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace MaterialMusic.ViewModel
 {
@@ -23,6 +26,10 @@ namespace MaterialMusic.ViewModel
 
         #endregion
 
+        /// <summary>
+        /// «Î«ÛÕ¯¬Á (≤‚ ‘Command)
+        /// </summary>
+        public ICommand RequestCommand { get; set; }
 
         #region Public Member
         public RelayCommand<string> WindowCommand => new RelayCommand<string>((para) =>
@@ -71,6 +78,7 @@ namespace MaterialMusic.ViewModel
         /// </summary>
         public MainViewModel()
         {
+            InitialCommands();
             ////if (IsInDesignMode)
             ////{
             ////    // Code runs in Blend --> create design time data.
@@ -80,5 +88,25 @@ namespace MaterialMusic.ViewModel
             ////    // Code runs "for real"
             ////}
         }
+
+        #region ≥ı ºªØCommand
+        private void InitialCommands()
+        {
+            RequestCommand = new RelayCommand(() =>
+            {
+                Task.Run(() =>
+                {
+
+                    var client = new RestClient("http://bing.com");
+                    var request = new RestRequest("");
+                    IRestResponse response = client.Execute(request);
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        MessageBox.Show(response.Content);
+                    });
+                });
+            });
+        }
+        #endregion
     }
 }
