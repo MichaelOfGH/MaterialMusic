@@ -72,13 +72,19 @@
                 </StackPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
             <!--  Content  -->
-            <Grid>
-                <Button
-                    Width="112"
-                    Height="56"
-                    Command="{Binding RequestCommand}"
-                    Content="RequestWeb" />
-            </Grid>
+            <StackPanel>
+
+                <Grid>
+                    <Button
+                        Width="112"
+                        Height="56"
+                        Command="{Binding RequestCommand}"
+                        Content="RequestWeb" />
+                </Grid>
+
+
+
+            </StackPanel>
         </materialDesign:DrawerHost>
     </Grid>
 </Window>

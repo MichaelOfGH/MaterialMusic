@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight.Command;
 using RestSharp;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace MaterialMusic.ViewModel
 {
@@ -26,50 +25,15 @@ namespace MaterialMusic.ViewModel
 
         #endregion
 
+
+
         /// <summary>
         /// «Î«ÛÕ¯¬Á (≤‚ ‘Command)
         /// </summary>
-        public ICommand RequestCommand { get; set; }
+        public RelayCommand RequestCommand { get; set; }
 
         #region Public Member
-        public RelayCommand<string> WindowCommand => new RelayCommand<string>((para) =>
-        {
-            if (string.IsNullOrWhiteSpace(para))
-            {
-                return;
-            }
 
-            MainWindow window = null;
-            for (int i = 0; i < Application.Current.Windows.Count; i++)
-            {
-                if (Application.Current.Windows[i] is MainWindow)
-                {
-                    window = Application.Current.Windows[i] as MainWindow;
-                }
-            }
-
-            switch (para)
-            {
-                case "0"://Close Window
-                    window.Close();
-                    break;
-                case "1"://Max or recovery Window
-                    if (window.WindowState == System.Windows.WindowState.Normal)
-                    {
-                        window.WindowState = System.Windows.WindowState.Maximized;//Maximized Window
-                    }
-                    else
-                    {
-                        window.WindowState = System.Windows.WindowState.Normal;//recovery
-                    }
-                    break;
-                case "2"://Min Window
-                    window.WindowState = System.Windows.WindowState.Normal;//Min window
-                    break;
-                default:
-                    break;
-            }
-        });
 
         #endregion
 
@@ -99,7 +63,7 @@ namespace MaterialMusic.ViewModel
 
                     var client = new RestClient("http://bing.com");
                     var request = new RestRequest("");
-                    IRestResponse response = client.Execute(request);
+                    var response = client.Execute(request);
                     App.Current.Dispatcher.Invoke(() =>
                     {
                         MessageBox.Show(response.Content);
