@@ -64,9 +64,10 @@ namespace MaterialMusic.ViewModel
                     var client = new RestClient("http://bing.com");
                     var request = new RestRequest("");
                     var response = client.Execute(request);
+                    MessageBox.Show(response.Content);
+                    return;
                     App.Current.Dispatcher.Invoke(() =>
                     {
-                        MessageBox.Show(response.Content);
                     });
                 });
             });

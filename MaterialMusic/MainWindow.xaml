@@ -54,21 +54,25 @@
                     <TextBlock Margin="4" HorizontalAlignment="Center">
                         LEFT FIELD
                     </TextBlock>
-                    <Button
-                        Margin="4"
-                        HorizontalAlignment="Center"
+
+                    <!--
                         Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                         CommandParameter="{x:Static Dock.Left}"
-                        Style="{DynamicResource MaterialDesignFlatButton}">
-                        CLOSE THIS
-                    </Button>
-                    <Button
-                        Margin="4"
-                        HorizontalAlignment="Center"
-                        Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-                        Style="{DynamicResource MaterialDesignFlatButton}">
-                        CLOSE ALL
-                    </Button>
+                    -->
+                    <ListViewItem Margin="0" HorizontalAlignment="Stretch">
+                        <ListViewItem.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Test1" />
+                                <MenuItem Header="Test2" />
+                            </ContextMenu>
+                        </ListViewItem.ContextMenu>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="48" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ListViewItem>
                 </StackPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
             <!--  Content  -->

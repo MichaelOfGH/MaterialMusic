@@ -18,6 +18,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignLightTheme.xaml" />
+                <ResourceDictionary Source="Styles/ContextMenu.xaml" />
                 <ResourceDictionary>
                     <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
                 </ResourceDictionary>
