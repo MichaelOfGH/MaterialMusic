@@ -68,6 +68,7 @@ namespace MaterialMusic.ViewModel
                     return;
                     App.Current.Dispatcher.Invoke(() =>
                     {
+
                     });
                 });
             });
