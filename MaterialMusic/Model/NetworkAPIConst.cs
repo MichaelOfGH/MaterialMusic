@@ -87,20 +87,19 @@ namespace MaterialMusic.Model
         public const string UpdateUser = "user/update";
 
         /// <summary>
-        /// 退出登录
+        /// 
         /// </summary>
-        public const string Logout = "logout";
+        public const string Object = "logout";
 
         /// <summary>
-        /// 退出登录
+        /// 
         /// </summary>
-        public const string Logout = "logout";
+        public const string Object_ = "logout";
 
         /// <summary>
-        /// 退出登录
+        /// 
         /// </summary>
-        public const string Logout = "logout";
-
+        public const string Object__ = "logout";
 
     }
 }
