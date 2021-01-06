@@ -1,0 +1,233 @@
+using Microsoft.Win32;
+using NAudio.Wave;
+using Stylet;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+
+namespace MaterialMusic
+{
+    public class LocalMusicPlayerViewModel : Screen, IHandle<KeyValuePair<string, object>>
+    {
+
+        //音乐文件：   mp3  wav  flac
+        #region Contructor
+        public LocalMusicPlayerViewModel()
+        {
+            InitialProperties();
+
+        }
+        #endregion
+
+        private static LocalMusicPlayerViewModel Instance;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private WaveOutEvent outputDevice { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private AudioFileReader audioFile { get; set; }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static LocalMusicPlayerViewModel GetInstance()
+        {
+            if (Instance == null)
+            {
+                Instance = new LocalMusicPlayerViewModel();
+            }
+            return Instance;
+        }
+
+        #region Public Member
+        /// <summary>
+        /// 是否在播放音乐
+        /// </summary>
+        public bool IsPlaying { get; set; }
+
+        /// <summary>
+        /// 当前音量
+        /// </summary>
+        public float CurrentVolume { get; set; }
+
+        /// <summary>
+        /// 正字
+        /// </summary>
+        public MusicInfo CurrentPlayindMusic { get; set; }
+
+        /// <summary>
+        /// 选中的音乐索引
+        /// </summary>
+        public int SelectedMusicIndex { get; set; }
+
+        /// <summary>
+        /// 本地歌单
+        /// </summary>
+        public ObservableCollection<MusicInfo> MusicList { get; set; }
+
+        #endregion
+
+        #region 初始化属性
+        public void InitialProperties()
+        {
+            MusicList = new ObservableCollection<MusicInfo>();
+            SelectedMusicIndex = -1;
+            CurrentVolume = 50;
+            outputDevice = GetNewWaveDevice();
+
+        }
+        #endregion
+
+        #region 获取新的播放实例
+        private WaveOutEvent GetNewWaveDevice()
+        {
+            var dev = new WaveOutEvent();
+            //dev.PlaybackStopped += OnPlaybackStopped;
+            dev.Volume = CurrentVolume / 100;//设置音量
+            return dev;
+        }
+        #endregion
+
+        #region 处理消息
+        public void Handle(KeyValuePair<string, object> message)
+        {
+            switch (message.Key)
+            {
+                case "":
+                    break;
+                default:
+                    break;
+            }
+        }
+        #endregion
+
+        #region 加载时
+        public void MusicViewLoaded()
+        {
+
+        }
+        #endregion
+
+        #region OnPlaybackStopped
+        /// <summary>
+        /// 停止播放时
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            IsPlaying = false;
+
+        }
+        #endregion
+
+        #region 选中的歌曲改变时
+        public void SelectedMusicChanged()
+        {
+            if (SelectedMusicIndex == -1)
+                return;
+            var smusic = MusicList[SelectedMusicIndex];
+            if (CurrentPlayindMusic?.MusicName == smusic.MusicName)
+            {
+                SetPlayOrPause();
+            }
+            else
+            {
+                //LocalSoundPlayer.Play(smusic.MusicPath);
+                if (outputDevice != null)
+                {
+                    outputDevice.Stop();
+                    outputDevice.Dispose();
+                }
+                if (audioFile != null)
+                {
+                    audioFile.Dispose();
+                }
+                if (CurrentPlayindMusic != null)
+                    CurrentPlayindMusic.IsPlaying = false;//之前歌曲不播放了
+                audioFile = new AudioFileReader(smusic.MusicPath);
+                outputDevice.Init(audioFile);//
+                outputDevice.Play();
+                smusic.IsPlaying = true;//当前歌曲正在播放
+                CurrentPlayindMusic = smusic;
+                IsPlaying = true;
+            }
+            SelectedMusicIndex = -1;
+        }
+        #endregion
+
+        #region 播放或暂停
+        public void SetPlayOrPause()
+        {
+            if (IsPlaying)
+            {
+                //LocalSoundPlayer.Pause();
+                outputDevice?.Pause();
+            }
+            else
+            {
+                //LocalSoundPlayer.Resume();
+                outputDevice?.Play();
+            }
+            IsPlaying = !IsPlaying;
+        }
+        #endregion
+
+
+        public void VolumeChanged()
+        {
+            outputDevice.Volume = CurrentVolume / 100;
+        }
+
+        #region 导入音乐
+        /// <summary>
+        /// 导入音乐
+        /// </summary>
+        public void ImportMusic()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+            openFileDialog.Filter = "MP3文件(*.mp3)|*.mp3|WAV文件(*.wav)|*.wav|FLAC文件(*.flac)|*.flac";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var selectedFiles = openFileDialog.FileNames.ToList();
+
+                for (int fIndex = 0; fIndex < selectedFiles.Count; fIndex++)
+                {
+                    var smusic = selectedFiles[fIndex];
+                    var strindex = smusic.LastIndexOf("\\");
+                    var mname = smusic.Substring(strindex + 1, smusic.Length - strindex - 1);
+                    var targetfile = Global.CurrentAccount.GetLocalMusicFileName(mname);//目标文件路径
+
+                    if (!File.Exists(targetfile))
+                        File.Copy(smusic, targetfile);//拷贝歌曲文件到当前目录
+
+                    //var ilong = LocalSoundPlayer.GetMediaLength(targetfile);
+
+                    var music = new MusicInfo
+                    {
+                        ImportTime = Helper.CurrentTimeStamp().ToString(),
+                        MusicPath = targetfile,
+                        MusicName = mname,
+                    };
+                    MusicList.Add(music);
+                }
+
+
+
+
+
+            }
+        }
+        #endregion
+
+    }
+}
